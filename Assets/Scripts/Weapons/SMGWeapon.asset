@@ -15,6 +15,6 @@ MonoBehaviour:
   friendlyName: SMG
   weaponPrefab: {fileID: 7197578984384867433, guid: 9eb80e0aec3901a4d8fdbb8af41eaaab, type: 3}
   fireCooldown: 0
-  ammoUsedPerShot: 1
-  damagePerProjectileHit: 1
+  ammoUsedPerShot: 2
+  damagePerProjectileHit: 3
   fullAuto: 1

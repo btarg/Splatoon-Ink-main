@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     public WeaponScriptableObject currentWeapon;
     public int currentAmmo = 100;
     GameObject spawnedWeapon;
-    int currentWeaponIndex = 0;
+    public int currentWeaponIndex = 0;
     bool isFiring = false;
     bool isDraining = false;
     public TextMeshProUGUI ammoText;
@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
         cam = this.GetComponent<Camera>();
         playerInput.Gameplay.Shoot.started += OnStartShoot;
         playerInput.Gameplay.Shoot.canceled += OnStopShoot;
+        playerInput.Gameplay.CycleWeapons.performed += OnCycleWeapons;
 
     }
 
@@ -48,9 +49,22 @@ public class Player : MonoBehaviour
         SwitchWeapon(currentWeaponIndex);
     }
 
+    public void OnCycleWeapons(InputAction.CallbackContext value) {
+        if (currentWeaponIndex == weapons.Count - 1) {
+            currentWeaponIndex = 0;
+        } else {
+            currentWeaponIndex += 1;
+        }
+    }
+
     void SwitchWeapon(int index) {
         
+        if (spawnedWeapon) {
+            Destroy(spawnedWeapon);
+        }
+
         currentWeapon = weapons.ToArray()[index];
+
         // Spawn the weapon object as a parent
         spawnedWeapon = Instantiate(currentWeapon.weaponPrefab);
         spawnedWeapon.transform.parent = gameObject.transform;
@@ -74,6 +88,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (currentWeaponIndex != weapons.IndexOf(currentWeapon)) {
+            SwitchWeapon(currentWeaponIndex);
+        }
+
         ammoText.text = "Ammo: " + currentAmmo;
 
         if (playerObject.GetComponent<PlayerMultiCollision>().isCollidingWithFriendlyPaint())
@@ -134,5 +152,11 @@ public class Player : MonoBehaviour
         canFire = false;
         yield return new WaitForSeconds(1);
         canFire = true;
+    }
+
+    private void OnDrawGizmos() {
+        foreach (Transform t in splatPositions) {
+            Gizmos.DrawCube(t.position, t.lossyScale);
+        }
     }
 }

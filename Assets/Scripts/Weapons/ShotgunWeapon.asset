@@ -15,6 +15,6 @@ MonoBehaviour:
   friendlyName: Shotgun
   weaponPrefab: {fileID: 437553682216737625, guid: 48814cc227edbdd4890391b7dcc8b70f, type: 3}
   fireCooldown: 0.6
-  ammoUsedPerShot: 10
+  ammoUsedPerShot: 15
   damagePerProjectileHit: 10
   fullAuto: 0
